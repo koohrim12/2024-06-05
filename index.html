@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div #root></div>
+    <script>
+      const getDateAJAX = () => {
+        const xhr = new XMLHttpRequest();
+        console.dir("데이터 받기 전 조회 :" + xhr);
+        xhr.open(
+          "GET",
+          "http://apis.data.go.kr/6300000/eventDataService",
+          true
+        );
+        xhr.addEventListener("load", () => {
+          if (xhr.status === 200) {
+            console.log("데이터 받은 후 조회");
+            console.dir(xhr);
+            const result = JSON.parse(xhr.responseText);
+            console.dir(result);
+            const date = result.results;
+            const root = document.getElementById("root");
+            const ul = document.createElement("ul");
+            date.array.forEach((date) => {
+              const li = document.createElement("li");
+              li.textContent = date.name;
+              ul.appendChild(li);
+            });
+            root.appendChild(ul);
+          }
+        });
+        xhr.send();
+      };
+      getDateAJAX();
+    </script>
+  </body>
+</html>
